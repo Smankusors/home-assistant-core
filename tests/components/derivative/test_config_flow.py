@@ -43,7 +43,7 @@ async def test_config_flow(hass: HomeAssistant, platform) -> None:
     assert result["title"] == "My derivative"
     assert result["data"] == {}
     assert result["options"] == {
-        "ignore_negative": False,
+        "ignore_negative_derivative": False,
         "name": "My derivative",
         "round": 1.0,
         "source": "sensor.input",
@@ -55,7 +55,7 @@ async def test_config_flow(hass: HomeAssistant, platform) -> None:
     config_entry = hass.config_entries.async_entries(DOMAIN)[0]
     assert config_entry.data == {}
     assert config_entry.options == {
-        "ignore_negative": False,
+        "ignore_negative_derivative": False,
         "name": "My derivative",
         "round": 1.0,
         "source": "sensor.input",
@@ -101,7 +101,7 @@ async def test_options(hass: HomeAssistant, platform) -> None:
     assert result["type"] is FlowResultType.FORM
     assert result["step_id"] == "init"
     schema = result["data_schema"].schema
-    assert not get_suggested(schema, "ignore_negative")
+    assert not get_suggested(schema, "ignore_negative_derivative")
     assert get_suggested(schema, "round") == 1.0
     assert get_suggested(schema, "time_window") == {"seconds": 0.0}
     assert get_suggested(schema, "unit_prefix") == "k"
@@ -110,7 +110,7 @@ async def test_options(hass: HomeAssistant, platform) -> None:
     result = await hass.config_entries.options.async_configure(
         result["flow_id"],
         user_input={
-            "ignore_negative": True,
+            "ignore_negative_derivative": True,
             "round": 2.0,
             "time_window": {"seconds": 10.0},
             "unit_time": "h",
@@ -118,7 +118,7 @@ async def test_options(hass: HomeAssistant, platform) -> None:
     )
     assert result["type"] is FlowResultType.CREATE_ENTRY
     assert result["data"] == {
-        "ignore_negative": True,
+        "ignore_negative_derivative": True,
         "name": "My derivative",
         "round": 2.0,
         "source": "sensor.input",
@@ -127,7 +127,7 @@ async def test_options(hass: HomeAssistant, platform) -> None:
     }
     assert config_entry.data == {}
     assert config_entry.options == {
-        "ignore_negative": True,
+        "ignore_negative_derivative": True,
         "name": "My derivative",
         "round": 2.0,
         "source": "sensor.input",
